@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug SQLite",
+            "program": "${workspaceFolder}/build/sqlite3",
+            "args": [],
+            "cwd": "${workspaceFolder}/build",
+            "preLaunchTask": "build-sqlite",
+            "console": "integratedTerminal"
+        }
+    ]
+}

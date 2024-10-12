@@ -1,0 +1,13 @@
+from the talk
+
+sqlite3_prepare_v2()
+    is the front half
+    handles the stage of compile SQL into a program
+
+output of sqlite3_prepare_v2() is a prepared statement
+
+sqlite3_step()
+    is the back half
+    runs the prepared statement
+
+gcc -DHAVE_READLINE -DSQLITE_ENABLE_FTS4 -DSQLITE_ENABLE_RTREE -DSQLITE_ENABLE_EXPLAIN_COMMENTS -o sqlite3 shell.c sqlite3.c -lreadline -ldl -lpthread -rpath "/usr/local/lib"
