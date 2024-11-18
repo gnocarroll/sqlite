@@ -336,6 +336,15 @@ SQLITE_API unsigned int sqlite3_value_flags(sqlite3_value *pVal){
   return pVal->flags;
 }
 
+SQLITE_API float sqlite3_point_x(sqlite3_value* pVal) {
+  Point p = pVal->u.p;
+  return p.x;
+}
+SQLITE_API float sqlite3_point_y(sqlite3_value* pVal) {
+  Point p = pVal->u.p;
+  return p.y;
+}
+
 /* Return true if a parameter to xUpdate represents an unchanged column */
 int sqlite3_value_nochange(sqlite3_value *pVal){
   return (pVal->flags&(MEM_Null|MEM_Zero))==(MEM_Null|MEM_Zero);

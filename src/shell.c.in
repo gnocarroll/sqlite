@@ -18,6 +18,7 @@
 #endif
 typedef unsigned int u32;
 typedef unsigned short int u16;
+#include <math.h>
 
 /*
 ** Optionally #include a user-defined header, whereby compilation options
@@ -630,16 +631,39 @@ static void distanceFunction(
     int argc,
     sqlite3_value **argv
 ) {
-    printf("number of arguments: %d\n", argc);
-    for (int i = 0 ; i < argc ; i++) {
-      if (sqlite3_value_flags(argv[i]) & 0x10000) {
-        printf("yes, ");
-      }
-      else {
-        printf("no, ");
-      }
+    if (argc != 2) {
+      sqlite3_result_error(context, "Invalid # of arguments for distance function, expected 2", -1);
+      return;
     }
-    printf("\n");
+    // printf("number of arguments: %d\n", argc);
+    // for (int i = 0 ; i < argc ; i++) {
+    //   if (sqlite3_value_flags(argv[i]) & 0x10000) {
+    //     printf("yes, ");
+    //   }
+    //   else {
+    //     printf("no, ");
+    //   }
+    // }
+    // printf("\n");
+    if (
+      (sqlite3_value_flags(argv[0]) & sqlite3_value_flags(argv[1]) & 0x10000)
+    ) {
+      float p1x = sqlite3_point_x(argv[0]);
+      float p1y = sqlite3_point_y(argv[0]);
+      float p2x = sqlite3_point_x(argv[1]);
+      float p2y = sqlite3_point_y(argv[1]);
+      double result = pow(
+        (double)(powf(p2x - p1x, 2.0f) + powf(p2y - p1y, 2.0f)),
+        0.5
+      );
+      // printf(
+      //   "distance between (%f, %f) & (%f, %f) is %f \n",
+      //   p1x, p1y, p2x, p2y, result
+      // );
+      sqlite3_result_double(context, result);
+      return;
+    }
+    sqlite3_result_error(context, "Invalid argument types for distance function", -1);
 }
 
 // CS541

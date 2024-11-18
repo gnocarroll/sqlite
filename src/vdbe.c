@@ -8888,6 +8888,17 @@ case OP_Function: {            /* group */
 #endif
   MemSetTypeFlag(pOut, MEM_Null);
   assert( pCtx->isError==0 );
+  // CS541 hack
+  // Ideally, we need to call applyPointAffinity from the distance function implementation in (shell.c.in)
+  // but exposing it to the file where you define external methods (shell.c.in) is tricky
+  // What I have exposed (to shell.c.in) is a method that returs the flags of a Mem struct, this allows 
+  // us to check if both the arguments are Points
+  // this hack simply calls applyPointAffinity on all arguments,
+  // to convert (potential) points into points so that we can operate on them in the 
+  // distance function implementation
+  for (int i = 0 ; i < pCtx->argc ; i++) {
+    applyPointAffinity(pCtx->argv[i]);
+  }
   (*pCtx->pFunc->xSFunc)(pCtx, pCtx->argc, pCtx->argv);/* IMP: R-24505-23230 */
 
   /* If the function returned an error, throw an exception */

@@ -368,6 +368,8 @@ struct sqlite3_api_routines {
   int (*set_clientdata)(sqlite3*, const char*, void*, void(*)(void*));
   // CS541
   unsigned int (*value_flags)(sqlite3_value*);
+  float (*point_x)(sqlite3_value*);
+  float (*point_y)(sqlite3_value*);
 };
 
 /*
