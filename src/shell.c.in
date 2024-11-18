@@ -624,6 +624,51 @@ static void SQLITE_CDECL iotracePrintf(const char *zFormat, ...){
 }
 #endif
 
+//CS541
+static void distanceFunction(
+    sqlite3_context *context,
+    int argc,
+    sqlite3_value **argv
+) {
+    printf("number of arguments: %d\n", argc);
+    for (int i = 0 ; i < argc ; i++) {
+      if (sqlite3_value_flags(argv[i]) & 0x10000) {
+        printf("yes, ");
+      }
+      else {
+        printf("no, ");
+      }
+    }
+    printf("\n");
+}
+
+// CS541
+int sqlite3_distance_init(
+  sqlite3 *db, 
+  char **pzErrMsg, 
+  const sqlite3_api_routines *pApi
+){
+    int rc = sqlite3_create_function(
+        db,
+        "dist",
+        2,
+        SQLITE_UTF8 | SQLITE_INNOCUOUS,
+        NULL,
+        distanceFunction,
+        NULL,
+        NULL
+    );
+
+    if (rc == SQLITE_OK) {
+      printf("distance function registration successful!!\n");
+    }
+    else {
+      printf("distance function registration UN-successful!!\n");
+    }
+
+  return rc;
+}
+
 /* Lookup table to estimate the number of columns consumed by a Unicode
 ** character.
 */
@@ -5625,6 +5670,8 @@ static void open_db(ShellState *p, int openFlags){
       sqlite3_db_config(p->db, SQLITE_DBCONFIG_TRUSTED_SCHEMA, testmode_on,0);
       sqlite3_db_config(p->db, SQLITE_DBCONFIG_DEFENSIVE, !testmode_on,0);
     }
+
+  sqlite3_distance_init(p->db, 0, 0); // CS541
 
 #ifndef SQLITE_OMIT_LOAD_EXTENSION
     sqlite3_enable_load_extension(p->db, 1);

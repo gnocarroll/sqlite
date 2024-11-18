@@ -366,6 +366,8 @@ struct sqlite3_api_routines {
   /* Version 3.44.0 and later */
   void *(*get_clientdata)(sqlite3*,const char*);
   int (*set_clientdata)(sqlite3*, const char*, void*, void(*)(void*));
+  // CS541
+  unsigned int (*value_flags)(sqlite3_value*);
 };
 
 /*

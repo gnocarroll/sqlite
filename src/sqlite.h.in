@@ -5801,7 +5801,8 @@ int sqlite3_value_type(sqlite3_value*);
 int sqlite3_value_numeric_type(sqlite3_value*);
 int sqlite3_value_nochange(sqlite3_value*);
 int sqlite3_value_frombind(sqlite3_value*);
-
+// CS541
+SQLITE_API unsigned int sqlite3_value_flags(sqlite3_value*);
 /*
 ** CAPI3REF: Report the internal text encoding state of an sqlite3_value object
 ** METHOD: sqlite3_value
@@ -5823,6 +5824,9 @@ int sqlite3_value_frombind(sqlite3_value*);
 ** hence should not need to use this interface.
 */
 int sqlite3_value_encoding(sqlite3_value*);
+
+// CS541
+unsigned int sqlite3_value_flags(sqlite3_value*);
 
 /*
 ** CAPI3REF: Finding The Subtype Of SQL Values

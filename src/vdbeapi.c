@@ -331,6 +331,11 @@ int sqlite3_value_encoding(sqlite3_value *pVal){
   return pVal->enc;
 }
 
+// CS541
+SQLITE_API unsigned int sqlite3_value_flags(sqlite3_value *pVal){
+  return pVal->flags;
+}
+
 /* Return true if a parameter to xUpdate represents an unchanged column */
 int sqlite3_value_nochange(sqlite3_value *pVal){
   return (pVal->flags&(MEM_Null|MEM_Zero))==(MEM_Null|MEM_Zero);
