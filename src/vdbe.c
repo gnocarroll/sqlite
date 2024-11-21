@@ -2465,11 +2465,14 @@ case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
     if (affinity == SQLITE_AFF_POINT) {
       if((flags1 & (MEM_Int|MEM_IntReal|MEM_Real|MEM_Str))==MEM_Str ){
         applyPointAffinity(pIn1);
-        flags1 = pIn1->flags;
       }
       if((flags3 & (MEM_Int|MEM_IntReal|MEM_Real|MEM_Str))==MEM_Str ){
         applyPointAffinity(pIn3);
-        flags3 = pIn3->flags;
+      }
+
+      if (!(pIn1->flags & MEM_Point)|| !(pIn3->flags & MEM_Point)) {
+        rc = SQLITE_MISMATCH;
+        goto abort_due_to_error;
       }
     }
     else if( affinity>=SQLITE_AFF_NUMERIC ){
