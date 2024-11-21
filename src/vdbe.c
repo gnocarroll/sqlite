@@ -2394,8 +2394,8 @@ case OP_Gt:               /* same as TK_GT, jump, in1, in3 */
 case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
   int res, res2;      /* Result of the comparison of pIn1 against pIn3 */
   char affinity;      /* Affinity to use for comparison */
-  u16 flags1;         /* Copy of initial value of pIn1->flags */
-  u16 flags3;         /* Copy of initial value of pIn3->flags */
+  u32 flags1;         /* Copy of initial value of pIn1->flags */
+  u32 flags3;         /* Copy of initial value of pIn3->flags */
 
   pIn1 = &aMem[pOp->p1];
   pIn3 = &aMem[pOp->p3];
