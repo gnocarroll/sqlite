@@ -4591,7 +4591,8 @@ int sqlite3MemCompare(const Mem *pMem1, const Mem *pMem2, const CollSeq *pColl){
 
       if ((p1.x == p2.x) && (p1.y == p2.y)) return 0;
       if ((p1.x > p2.x) && (p1.y > p2.y)) return 1;
-      return -1;
+	  if ((p1.x < p2.x) && (p1.y < p2.y)) return -1;
+      return -1234;
     }
 
     /* Will arbitrarily have points compare as greater when compared with

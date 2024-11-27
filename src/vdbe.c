@@ -2521,7 +2521,11 @@ case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
   ** order:  NE, EQ, GT, LE, LT, GE */
   assert( OP_Eq==OP_Ne+1 ); assert( OP_Gt==OP_Ne+2 ); assert( OP_Le==OP_Ne+3 );
   assert( OP_Lt==OP_Ne+4 ); assert( OP_Ge==OP_Ne+5 );
-  if( res<0 ){
+  // the case where comparing 2 points isn't a clear >, < or ==
+  if (res == -1234){
+	// logical result of false
+	res2 = 0;
+  }else if( res<0 ){
     res2 = sqlite3aLTb[pOp->opcode];
   }else if( res==0 ){
     res2 = sqlite3aEQb[pOp->opcode];
@@ -2538,10 +2542,13 @@ case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
   pIn1->flags = flags1;
 
   VdbeBranchTaken(res2!=0, (pOp->p5 & SQLITE_NULLEQ)?2:3);
+//   if( res2 ){
+//     goto jump_to_p2;
+//   }
   if( res2 ){
-    goto jump_to_p2;
+    break;
   }
-  break;
+  goto jump_to_p2;
 }
 
 /* Opcode: ElseEq * P2 * * *

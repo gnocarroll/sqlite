@@ -2642,7 +2642,8 @@ Bitmask sqlite3WhereCodeOneLoopStart(
         sqlite3WhereTermPrint(pTerm, pWC->nTerm-j);
       }
 #endif
-      sqlite3ExprIfFalse(pParse, pE, addrCont, SQLITE_JUMPIFNULL);
+    //   sqlite3ExprIfFalse(pParse, pE, addrCont, SQLITE_JUMPIFNULL);
+	sqlite3ExprIfTrue(pParse, pE, addrCont, SQLITE_JUMPIFNULL);
       if( skipLikeAddr ) sqlite3VdbeJumpHere(v, skipLikeAddr);
       pTerm->wtFlags |= TERM_CODED;
     }
