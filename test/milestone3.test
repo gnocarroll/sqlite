@@ -1,0 +1,50 @@
+# Test cases for SQLite-L project milestone 3
+# As described in the README, this test can be run the same way as any other
+# individual test in SQLite.
+
+set testdir [file dirname $argv0]
+source $testdir/tester.tcl
+set testprefix milestone3
+
+do_execsql_test milestone3-100 {
+  CREATE TABLE points1 (p POINT);
+  INSERT INTO points1 VALUES ('1.0,1.0'), ('2.0,2.0'), ('3.0,3.0');
+  SELECT * FROM points1;
+} {1.0,1.0 2.0,2.0 3.0,3.0}
+
+do_execsql_test milestone3-110 {
+  SELECT dist('1.0,1.0', p) FROM points1;
+} {0.0 1.4142135623731 2.82842712474619}
+
+do_execsql_test milestone3-120 {
+  INSERT INTO points1 VALUES ('4.0,4.0'), ('5.0,5.0');
+  SELECT p FROM points1 ORDER BY dist(p, '5.0,5.0') LIMIT 3;
+} {5.0,5.0 4.0,4.0 3.0,3.0}
+
+do_execsql_test milestone3-130 {
+  SELECT p FROM points1 WHERE p BETWEEN '2.5,2.5' AND '4.5,4.5';
+} {3.0,3.0 4.0,4.0}
+
+do_execsql_test milestone3-200 {
+  CREATE TABLE points2 (p POINT);
+  INSERT INTO points2 VALUES ('1.0,1.0'), ('3.0,3.0');
+  SELECT * FROM points2 JOIN points1 ON dist(points2.p, points1.p) < 2.0;
+} {1.0,1.0 1.0,1.0 1.0,1.0 2.0,2.0 3.0,3.0 2.0,2.0 3.0,3.0 3.0,3.0 3.0,3.0 4.0,4.0}
+
+do_execsql_test milestone3-300 {
+  CREATE TABLE points3 (p POINT);
+  INSERT INTO points3 VALUES ('1.0,1.0'), ('2.0,2.0');
+  SELECT p FROM points3 WHERE p BETWEEN '1.5,1.5' AND '1.6,1.6';
+} {}
+
+do_execsql_test milestone3-310 {
+  SELECT p FROM points3 WHERE p BETWEEN '1.0,1.0' AND '1.0,1.0';
+} {1.0,1.0}
+
+do_test milestone2-320 {
+  catchsql {
+    select p < 1 from points3
+  }
+} {1 {datatype mismatch}}
+
+finish_test
