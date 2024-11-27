@@ -2341,10 +2341,11 @@ struct CollSeq {
 #define SQLITE_AFF_REAL     0x45  /* 'E' */
 #define SQLITE_AFF_FLEXNUM  0x46  /* 'F' */
 
-// Adding point affinity def here
+// CS541 - Adding point affinity def here
 #define SQLITE_AFF_POINT    0x47  /* 'G' */
 
-#define sqlite3IsNumericAffinity(X)  ((X)>=SQLITE_AFF_NUMERIC)
+// CS541 - modifying this so that POINT is not viewed as a numeric affinity
+#define sqlite3IsNumericAffinity(X)  ((X)>=SQLITE_AFF_NUMERIC && (X) < SQLITE_AFF_POINT)
 
 /*
 ** The SQLITE_AFF_MASK values masks off the significant bits of an

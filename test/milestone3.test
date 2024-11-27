@@ -47,4 +47,14 @@ do_test milestone2-320 {
   }
 } {1 {datatype mismatch}}
 
+# Below test equality join with points
+
+do_execsql_test milestone2-400 {
+  CREATE TABLE points4 (p POINT);
+  CREATE TABLE points5 (p POINT);
+  INSERT INTO points4 VALUES ('1.0,1.0'), ('2.0,1.0'), ('2.0,2.0'), ('3.0,1.0');
+  INSERT INTO points5 VALUES ('1.0,1.0'), ('1.0,1.0'), ('2.0,2.0'), ('3.0,1.0');
+  SELECT points4.rowid, points4.p, points5.rowid, points5.p FROM points4 JOIN points5 ON points4.p = points5.p;
+} {1 1.0,1.0 1 1.0,1.0 1 1.0,1.0 2 1.0,1.0 3 2.0,2.0 3 2.0,2.0 4 3.0,1.0 4 3.0,1.0}
+
 finish_test

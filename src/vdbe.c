@@ -2470,10 +2470,35 @@ case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
         applyPointAffinity(pIn3);
       }
 
-      if (!(pIn1->flags & MEM_Point)|| !(pIn3->flags & MEM_Point)) {
+      if (!(pIn1->flags & MEM_Point) || !(pIn3->flags & MEM_Point)) {
         rc = SQLITE_MISMATCH;
         goto abort_due_to_error;
       }
+
+      switch (pOp->opcode) {
+        case OP_Eq:
+          res2 = ((pIn3->u.p.x == pIn1->u.p.x) && (pIn3->u.p.y == pIn1->u.p.y));
+          break;
+        case OP_Ne:
+          res2 = ((pIn3->u.p.x != pIn1->u.p.x) || (pIn3->u.p.y != pIn1->u.p.y));
+          break;
+        case OP_Lt:
+          res2 = ((pIn3->u.p.x < pIn1->u.p.x) || (pIn3->u.p.y < pIn1->u.p.y));
+          break;
+        case OP_Le:
+          res2 = ((pIn3->u.p.x <= pIn1->u.p.x) && (pIn3->u.p.y <= pIn1->u.p.y));
+          break;
+        case OP_Gt:
+          res2 = ((pIn3->u.p.x > pIn1->u.p.x) || (pIn3->u.p.y > pIn1->u.p.y));
+          break;
+        case OP_Ge:
+          res2 = ((pIn3->u.p.x >= pIn1->u.p.x) && (pIn3->u.p.y >= pIn1->u.p.y));
+          break;
+        default: // should be impossible
+          assert("invalid opcode for comparison" && false);
+      }
+
+      goto cs541_bin_cmp_done;
     }
     else if( affinity>=SQLITE_AFF_NUMERIC ){
       if( (flags1 | flags3)&MEM_Str ){
@@ -2530,6 +2555,8 @@ case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
   }
   iCompare = res;
   VVA_ONLY( iCompareIsInit = 1; )
+
+cs541_bin_cmp_done:
 
   /* Undo any changes made by applyAffinity() to the input registers. */
   assert( (pIn3->flags & MEM_Dyn) == (flags3 & MEM_Dyn) );
