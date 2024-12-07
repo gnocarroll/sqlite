@@ -6,6 +6,16 @@ This is our fork of SQLite for our CS541 project. In our project, we will be
 adding a POINT data type to SQLite, including related functionality such as
 computing the distance between two points.
 
+## Milestone 3
+
+Similarly to Milestone 2, the slide deck is the best resource to consult for
+our progress. The build process remains the same and we have added ``milestone3.test``
+which can be run in the same manner as ``milestone2.test`` and contains tests for our
+new functionality. We have still not dealt with the issue of debug asserts so
+you will have to do a release build. However, with a release build we have again
+confirmed using a large existing test suite that we have not broke any of the existing
+functionality of SQLite.
+
 ## Milestone 2
 
 See the Milestone 2 slide deck for our current progress. The build process for
