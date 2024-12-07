@@ -15,6 +15,7 @@ Brief instructions to build are as follows:
 * ``cd`` into the build directory, then run ``../sqlite/configure``
 * After that, remaining in the build directory, you can now build Makefile targets
 * e.g. ``make sqlite3``, ``make testfixture``
+* We have verified that it works on MacOS and Linux, so to guarantee that it builds correctly use one of those operating systems.
 
 ### To Test
 
