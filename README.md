@@ -8,6 +8,21 @@ computing the distance between two points.
 
 ## Instructions
 
+Brief instructions to build are as follows:
+
+* Clone the repository
+* Staying in the parent directory of the sqlite repository, create a build directory (e.g. ``mkdir bld``)
+* ``cd`` into the build directory, then run ``../sqlite/configure``
+* After that, remaining in the build directory, you can now build Makefile targets
+* e.g. ``make sqlite3``, ``make testfixture``
+
+### To Test
+
+* Once you have the testfixture executable (can make once you have configured as described above), you can run it on a test script
+* The tests are located in the ``test`` subdirectory
+* They can be run as follows ``./testfixture ../sqlite/test/milestone2.test`` (supposing you are in your build directory)
+* Our test files are, in order of oldest to most recent, ``milestone2.test``, ``milestone3.test``, ``final_presentation.test``
+
 ## Changed Files
 * Makefile.in
 * Makefile.msc
