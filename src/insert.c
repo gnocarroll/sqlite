@@ -1251,12 +1251,6 @@ void sqlite3Insert(
         if( pTab->aCol[i].colFlags & COLFLAG_NOINSERT ) nHidden++;
       }
     }
-    if( nColumn!=(pTab->nCol-nHidden) ){
-      sqlite3ErrorMsg(pParse,
-         "table %S has %d columns but %d values were supplied",
-         pTabList->a, pTab->nCol-nHidden, nColumn);
-     goto insert_cleanup;
-    }
   }
   if( pColumn!=0 && nColumn!=pColumn->nId ){
     sqlite3ErrorMsg(pParse, "%d values for %d columns", nColumn, pColumn->nId);
