@@ -4794,8 +4794,30 @@ int sqlite3VdbeRecordCompareWithSkip(
   while( 1 /*exit-by-break*/ ){
     u32 serial_type;
 
+	if (pRhs->flags & MEM_Point) {
+		// float x = pRhs->u.p.x;
+		// float y = pRhs->u.p.y;
+		Point p2 = pRhs->u.p;
+		getVarint32NR(&aKey1[idx1], serial_type);
+		// printf("MEM_Point hit for (%f, %f)\n", x, y);
+    	if( serial_type==11 ){ // the type for point
+			Point p1;
+			memcpy(&p1, &aKey1[d1], sizeof(Point));
+			if ((p1.x == pRhs->u.p.x) && (p1.y == pRhs->u.p.y)) {
+
+			}
+			else if ((p1.x >= pRhs->u.p.x) || (p1.y >= pRhs->u.p.y)) {
+				rc += 1;
+			}
+			else if ((p1.x <= pRhs->u.p.x) || (p1.y <= pRhs->u.p.y)) {
+				rc -= 1;
+			}
+			// printf("compared (%f, %f) (%f, %f) in sqlite3VdbeRecordCompareWithSkip to be %d\n", p1.x, p1.y, pRhs->u.p.x, pRhs->u.p.y, rc);
+		}
+	}
+
     /* RHS is an integer */
-    if( pRhs->flags & (MEM_Int|MEM_IntReal) ){
+    else if( pRhs->flags & (MEM_Int|MEM_IntReal) ){
       testcase( pRhs->flags & MEM_Int );
       testcase( pRhs->flags & MEM_IntReal );
       serial_type = aKey1[idx1];

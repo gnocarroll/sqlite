@@ -381,10 +381,6 @@ static char comparisonAffinity(const Expr *pExpr){
 ** the comparison in pExpr.
 */
 int sqlite3IndexAffinityOk(const Expr *pExpr, char idx_affinity){
-  if (idx_affinity == SQLITE_AFF_POINT) {
-    return 0; // CS541 - no point index yet
-  }
-
   char aff = comparisonAffinity(pExpr);
   if( aff<SQLITE_AFF_TEXT ){
     return 1;

@@ -747,7 +747,18 @@ static u64 filterHash(const Mem *aMem, const Op *pOp){
   assert( pOp->p4type==P4_INT32 );
   for(i=pOp->p3, mx=i+pOp->p4.i; i<mx; i++){
     const Mem *p = &aMem[i];
-    if( p->flags & (MEM_Int|MEM_IntReal) ){
+	// CS541: for points
+	if( p->flags & MEM_Point ){
+		// Use both coordinates to generate hash
+		float x = p->u.p.x;
+		float y = p->u.p.y;
+		// Example hash function for points
+		h += ((u64)x << 32) ^ ((u64)y);
+		// printf("filterHashing (%f, %f) = %llu\n", x, y, h);
+		// h += x*x + y*y;
+		// printf("\n hash of (%f, %f) = %llu\n", x, y, h);
+	}
+    else if( p->flags & (MEM_Int|MEM_IntReal) ){
       h += p->u.i;
     }else if( p->flags & MEM_Real ){
       h += sqlite3VdbeIntValue(p);
@@ -9002,6 +9013,7 @@ case OP_FilterAdd: {
   assert( pIn1->flags & MEM_Blob );
   assert( pIn1->n>0 );
   h = filterHash(aMem, pOp);
+//   printf("from OP_FilterAdd call to filterHash resutlt: %llu\n", h);
 #ifdef SQLITE_DEBUG
   if( db->flags&SQLITE_VdbeTrace ){
     int ii;
@@ -9049,10 +9061,16 @@ case OP_Filter: {          /* jump */
 #endif
   h %= (pIn1->n*8);
   if( (pIn1->z[h/8] & (1<<(h&7)))==0 ){
+	// printf("not in filter\n");
+	// if ((&aMem[pOp->p3])->flags & MEM_Point) {
+	// 	printf("jumping to true case\n");
+	// 	goto maybe_this_works;
+	// }
     VdbeBranchTaken(1, 2);
     p->aCounter[SQLITE_STMTSTATUS_FILTER_HIT]++;
     goto jump_to_p2;
   }else{
+	// printf("found in filter\n");
     p->aCounter[SQLITE_STMTSTATUS_FILTER_MISS]++;
     VdbeBranchTaken(0, 2);
   }
