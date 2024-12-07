@@ -974,7 +974,7 @@ static void nodeGetCell(
 ** the virtual table module xCreate() and xConnect() methods.
 */
 static int rtreeInit(
-  sqlite3 *, void *, int, const char *const*, sqlite3_vtab **, char **, int
+  sqlite3 *, void *, int, char* argv[], sqlite3_vtab **, char **, int
 );
 
 /* 
@@ -3594,7 +3594,7 @@ static int rtreeTokenLength(const char *z){
 static int rtreeInit(
   sqlite3 *db,                        /* Database connection */
   void *pAux,                         /* One of the RTREE_COORD_* constants */
-  int argc, const char *const*argv,   /* Parameters to CREATE TABLE statement */
+  int argc, char* argv[],   /* Parameters to CREATE TABLE statement */
   sqlite3_vtab **ppVtab,              /* OUT: New virtual table */
   char **pzErr,                       /* OUT: Error message, if any */
   int isCreate                        /* True for xCreate, false for xConnect */
@@ -3618,6 +3618,44 @@ static int rtreeInit(
   };
 
   assert( RTREE_MAX_AUX_COLUMN<256 ); /* Aux columns counted by a u8 */
+
+  // CS541: Expand point columns
+  int newArgc = argc;
+  char* POINT = "POINT";
+  for (int i = 0; i < argc; i++) {
+    int length = strlen(argv[i]);
+    if (length >= 7) {
+      int cmp = strncmp((argv[i] + length - 5), POINT, 5);
+      if (!cmp) {
+        newArgc++;
+      }
+    }
+  }
+  
+  char* newArgv[newArgc];
+  if (newArgc > argc) {
+
+    for (int i = 0; i < argc; i++) {
+      int length = strlen(argv[i]);
+      if (length >= 7 && !strncmp((argv[i] + length - 5), POINT, 5)) {
+        (argv[i] + length - 5)[0] = 0;
+        char* str1 = strdup(argv[i]);
+        char* str2 = strdup(argv[i]);
+
+        str1[strlen(str1) - 1] = 'X';
+        str2[strlen(str2) - 1] = 'Y';
+
+        newArgv[i++] = str1;
+        newArgv[i] = str2;
+      } else {
+        newArgv[i] = argv[i];
+      }
+    }
+
+    argv = newArgv;
+    argc = newArgc;
+  }
+
   if( argc<6 || argc>RTREE_MAX_AUX_COLUMN+3 ){
     *pzErr = sqlite3_mprintf("%s", aErrMsg[2 + (argc>=6)]);
     return SQLITE_ERROR;
