@@ -3128,10 +3128,7 @@ static int rtreeUpdate(
       for(ii=0; ii<nn; ii+=2){
         cell.aCoord[ii].f = rtreeValueDown(aData[ii+3]);
         cell.aCoord[ii+1].f = rtreeValueUp(aData[ii+4]);
-        if( cell.aCoord[ii].f>cell.aCoord[ii+1].f ){
-          rc = rtreeConstraintError(pRtree, ii+1);
-          goto constraint;
-        }
+        
       }
     }else
 #endif
@@ -3139,10 +3136,7 @@ static int rtreeUpdate(
       for(ii=0; ii<nn; ii+=2){
         cell.aCoord[ii].i = sqlite3_value_int(aData[ii+3]);
         cell.aCoord[ii+1].i = sqlite3_value_int(aData[ii+4]);
-        if( cell.aCoord[ii].i>cell.aCoord[ii+1].i ){
-          rc = rtreeConstraintError(pRtree, ii+1);
-          goto constraint;
-        }
+        
       }
     }
 
