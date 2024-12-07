@@ -6,6 +6,38 @@ This is our fork of SQLite for our CS541 project. In our project, we will be
 adding a POINT data type to SQLite, including related functionality such as
 computing the distance between two points.
 
+## Instructions
+
+## Changed Files
+* Makefile.in
+* Makefile.msc
+* README.md
+* ext/rtree/rtree.c
+* main.mk
+* src/expr.c
+* src/func.c
+* src/global.c
+* src/insert.c
+* src/loadext.c
+* src/point.c
+* src/sqlite.h.in
+* src/sqlite3ext.h
+* src/sqliteInt.h
+* src/util.c
+* src/vdbe.c
+* src/vdbeInt.h
+* src/vdbeapi.c
+* src/vdbeaux.c
+* src/vdbemem.c
+* test/final_presentation.test
+* test/milestone2.test
+* test/milestone3.test
+* tool/mksqlite3c-noext.tcl
+* tool/mksqlite3c.tcl
+
+## Final
+See the Final Presentation slide deck for our current progress. The build process is the same. We added ``final_presentation.test`` to the tests and implemented the r-tree index and partly utilized the r-tree index for the 3 different queries implemented for location types.
+
 ## Milestone 3
 
 Similarly to Milestone 2, the slide deck is the best resource to consult for
