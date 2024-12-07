@@ -512,7 +512,7 @@ FUZZDATA = \
 
 # Standard options to testfixture
 #
-TESTOPTS = --verbose=file --output=test-out.txt
+TESTOPTS = --verbose=file --output=test-out.txt -DSQLITE_ENABLE_RTREE=1
 
 # Extra compiler options for various shell tools
 #

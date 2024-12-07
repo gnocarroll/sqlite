@@ -2462,7 +2462,7 @@ case OP_Ge: {             /* same as TK_GE, jump, in1, in3 */
     /* Neither operand is NULL and we couldn't do the special high-speed
     ** integer comparison case.  So do a general-case comparison. */
     affinity = pOp->p5 & SQLITE_AFF_MASK;
-    if (affinity == SQLITE_AFF_POINT) {
+    if (affinity == SQLITE_AFF_POINT || (flags1 & MEM_Point || flags3 & MEM_Point)) {
       if((flags1 & (MEM_Int|MEM_IntReal|MEM_Real|MEM_Str))==MEM_Str ){
         applyPointAffinity(pIn1);
       }

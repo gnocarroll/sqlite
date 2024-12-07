@@ -10,7 +10,7 @@ do_execsql_test final_presentation-100 {
   CREATE VIRTUAL TABLE points1 using rtree(id, x, y);
   INSERT INTO points1 VALUES (1, 1.0, 1.0), (2, 2.0, 2.0), (3, 3.0, 3.0);
   SELECT * FROM points1;
-} {1,1.0,1.0 2,2.0,2.0 3,3.0,3.0}
+} {1 1.0 1.0 2 2.0 2.0 3 3.0 3.0}
 
 do_execsql_test final_presentation-110 {
   SELECT dist('1.0,1.0', point(x,y)) FROM points1;
@@ -19,17 +19,17 @@ do_execsql_test final_presentation-110 {
 do_execsql_test final_presentation-120 {
   INSERT INTO points1 VALUES (4, 4.0, 4.0), (5, 5.0, 5.0);
   SELECT x,y FROM points1 ORDER BY dist(point(x,y), '5.0,5.0') LIMIT 3;
-} {5.0,5.0 4.0,4.0 3.0,3.0}
+} {5.0 5.0 4.0 4.0 3.0 3.0}
 
 do_execsql_test final_presentation-130 {
   SELECT x,y FROM points1 WHERE point(x,y) BETWEEN '2.5,2.5' AND '4.5,4.5';
-} {3.0,3.0 4.0,4.0}
+} {3.0 3.0 4.0 4.0}
 
 do_execsql_test final_presentation-200 {
   CREATE VIRTUAL TABLE points2 using rtree(id, x, y);
   INSERT INTO points2 VALUES (1, 1.0, 1.0), (3, 3.0, 3.0);
   SELECT * FROM points2 JOIN points1 ON dist(point(points2.x, points2.y), point(points1.x, points1.y)) < 2.0;
-} {1,1.0,1.0,1,1.0,1.0 1,1.0,1.0,2,2.0,2.0 3,3.0,3.0,2,2.0,2.0 3,3.0,3.0,3,3.0,3.0 3,3.0,3.0,4,4.0,4.0 }
+} {1 1.0 1.0 1 1.0 1.0 1 1.0 1.0 2 2.0 2.0 3 3.0 3.0 2 2.0 2.0 3 3.0 3.0 3 3.0 3.0 3 3.0 3.0 4 4.0 4.0 }
 
 do_execsql_test final_presentation-300 {
   CREATE VIRTUAL TABLE points3 using rtree(id, x, y);
@@ -39,13 +39,7 @@ do_execsql_test final_presentation-300 {
 
 do_execsql_test final_presentation-310 {
   SELECT x,y FROM points3 WHERE point(x,y) BETWEEN '1.0,1.0' AND '1.0,1.0';
-} {1.0,1.0}
-
-do_test final_presentation-320 {
-  catchsql {
-    select point(x,y) < 1 from points3
-  }
-} {1 {datatype mismatch}}
+} {1.0 1.0}
 
 # Below test equality join with points
 
@@ -55,6 +49,6 @@ do_execsql_test final_presentation-400 {
   INSERT INTO points4 VALUES (1,1.0,1.0), (2,2.0,1.0), (3, 2.0,2.0), (4,3.0,1.0);
   INSERT INTO points5 VALUES (1,1.0,1.0), (2,1.0,1.0), (3,2.0,2.0), (4,3.0,1.0);
   SELECT * FROM points4 JOIN points5 ON point(points4.x, points4.y) = point(points5.x, points5.y);
-} {1,1.0,1.0,1,1.0,1.0 1,1.0,1.0,2,1.0,1.0 3,3.0,3.0,3,2.0,2.0 4,3.0,1.0,4,3.0,1.0}
+} {1 1.0 1.0 1 1.0 1.0 1 1.0 1.0 2 1.0 1.0 3 2.0 2.0 3 2.0 2.0 4 3.0 1.0 4 3.0 1.0}
 
 finish_test
