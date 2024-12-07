@@ -54,41 +54,6 @@ Brief instructions to build are as follows:
 ## Final
 See the Final Presentation slide deck for our current progress. The build process is the same. We added ``final_presentation.test`` to the tests and implemented the r-tree index and partly utilized the r-tree index for the 3 different queries implemented for location types.
 
-## Milestone 3
-
-Similarly to Milestone 2, the slide deck is the best resource to consult for
-our progress. The build process remains the same and we have added ``milestone3.test``
-which can be run in the same manner as ``milestone2.test`` and contains tests for our
-new functionality. We have still not dealt with the issue of debug asserts so
-you will have to do a release build. However, with a release build we have again
-confirmed using a large existing test suite that we have not broke any of the existing
-functionality of SQLite.
-
-## Milestone 2
-
-See the Milestone 2 slide deck for our current progress. The build process for
-the project is not different from the original SQLite build process, and the
-instructions already provided by SQLite can be followed. However, note that
-we are still ironing out some issues with a debug build and the additional
-``assert()`` calls SQLite adds in that case so at this point we have only
-guaranteed
-that a release build will work with our new features (the build instructions
-in this README describe how to run configure to do a debug vs. release
-build). We will be working to rectify this as soon as we can.
-
-See the testing section in the original SQLite README (which is below our
-additions here at the top) for how to run tests. We have added a test file
-``milestone2.test`` to the test directory
-which tests the simple POINT functionality implemented for
-milestone 2. It can be run individually in the same manner as other individual
-tests. Namely, make the ``textfixture`` executable and then run it with our
-file as the argument.
-
-We also ran the ``quicktest`` test suite provided by SQLite to help confirm
-that our modifications for milestone 2 have not broken any existing
-functionality. All roughly 395,000 test cases in that test suite still pass so
-it seems like we did not break any of the existing functionality.
-
 Below this is the unmodified text from SQLite's full README.
 
 <h1 align="center">SQLite Source Repository</h1>
