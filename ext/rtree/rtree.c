@@ -53,9 +53,6 @@
 **      child page.
 */
 
-#if !defined(SQLITE_CORE) \
-  || (defined(SQLITE_ENABLE_RTREE) && !defined(SQLITE_OMIT_VIRTUALTABLE))
-
 #ifndef SQLITE_CORE
   #include "sqlite3ext.h"
   SQLITE_EXTENSION_INIT1
@@ -4461,6 +4458,4 @@ int sqlite3_rtree_init(
   SQLITE_EXTENSION_INIT2(pApi)
   return sqlite3RtreeInit(db);
 }
-#endif
-
 #endif
