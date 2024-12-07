@@ -522,7 +522,8 @@ static const sqlite3_api_routines sqlite3Apis = {
   /* CS541 - get part of point */
 
   sqlite3_value_point_x,
-  sqlite3_value_point_y
+  sqlite3_value_point_y,
+  sqlite3_result_point
 };
 
 /* True if x is the directory separator character

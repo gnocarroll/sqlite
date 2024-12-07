@@ -993,6 +993,17 @@ void sqlite3VdbeMemSetInt64(Mem *pMem, i64 val){
 }
 
 /*
+** CS541 - set to point
+*/
+void sqlite3VdbeMemSetPoint(Mem *pMem, Point *p){
+  if( VdbeMemDynamic(pMem) ){
+    sqlite3VdbeMemSetNull(pMem);
+  }
+  pMem->u.p = *p;
+  pMem->flags = MEM_Point;
+}
+
+/*
 ** Set the iIdx'th entry of array aMem[] to contain integer value val.
 */
 void sqlite3MemSetArrayInt64(sqlite3_value *aMem, int iIdx, i64 val){

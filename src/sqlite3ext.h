@@ -368,6 +368,7 @@ struct sqlite3_api_routines {
   int (*set_clientdata)(sqlite3*, const char*, void*, void(*)(void*));
   float (*value_point_x)(sqlite3_value*);
   float (*value_point_y)(sqlite3_value*);
+  void (*result_point)(sqlite3_context*, Point*);
 };
 
 /*
@@ -701,6 +702,12 @@ typedef int (*sqlite3_loadext_entry)(
 /* Version 3.44.0 and later */
 #define sqlite3_get_clientdata         sqlite3_api->get_clientdata
 #define sqlite3_set_clientdata         sqlite3_api->set_clientdata
+
+/* Additional macros for CS541 */
+
+#define sqlite3_value_point_x          sqlite3_api->value_point_x
+#define sqlite3_value_point_y          sqlite3_api->value_point_y
+#define sqlite3_result_point           sqlite3_api->result_point
 #endif /* !defined(SQLITE_CORE) && !defined(SQLITE_OMIT_LOAD_EXTENSION) */
 
 #if !defined(SQLITE_CORE) && !defined(SQLITE_OMIT_LOAD_EXTENSION)

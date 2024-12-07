@@ -492,6 +492,9 @@ void sqlite3_result_double(sqlite3_context *pCtx, double rVal){
   assert( sqlite3_mutex_held(pCtx->pOut->db->mutex) );
   sqlite3VdbeMemSetDouble(pCtx->pOut, rVal);
 }
+void sqlite3_result_point(sqlite3_context *pCtx, Point* p) {
+  sqlite3VdbeMemSetPoint(pCtx->pOut, p);
+}
 void sqlite3_result_error(sqlite3_context *pCtx, const char *z, int n){
 #ifdef SQLITE_ENABLE_API_ARMOR
   if( pCtx==0 ) return;
